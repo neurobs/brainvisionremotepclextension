@@ -1,0 +1,10 @@
+; pcl_extension_template.def : Declares the module parameters.
+
+LIBRARY      "pcl_extension_template.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE
+	DllInstall		PRIVATE

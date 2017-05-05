@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{97241bf8-8785-4f61-9112-af888db55fe4}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\PresentationSDK">
+      <UniqueIdentifier>{a4c8afcf-6ee6-4251-85b8-3ab8deca6368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PresentationSDK\public_src">
+      <UniqueIdentifier>{686ed4a9-8598-40ab-bda7-66e20b53cb88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PresentationSDK\PCLExtension">
+      <UniqueIdentifier>{58104962-1885-49a6-adc4-171be9797725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PresentationSDK\PCLExtension\interface">
+      <UniqueIdentifier>{4d1a379e-f8ab-47ce-b18d-366f9cf5af28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\boilerplate">
+      <UniqueIdentifier>{d5bda0ee-39c7-40d1-b697-3068d5f5e31e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PCLLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Type1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Type1Type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl_extension_template_i.c">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PresentationSDK\public_src\com_initializer.cpp">
+      <Filter>Source Files\PresentationSDK\public_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PresentationSDK\public_src\string_utilities.cpp">
+      <Filter>Source Files\PresentationSDK\public_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PresentationSDK\PCLExtension\interface\PCLExtension_i.c">
+      <Filter>Source Files\PresentationSDK\PCLExtension\interface</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl_extension_interface_wrappers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl_extension_template.cpp">
+      <Filter>Source Files\boilerplate</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files\boilerplate</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\boilerplate</Filter>
+    </ClCompile>
+    <ClCompile Include="tcp_client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="pcl_extension_template.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="PCLLibrary.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Type1.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Type1Type.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Type2.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Type2Type.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="pcl_extension_template.def">
+      <Filter>Source Files\boilerplate</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="pcl_extension_template.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pcl_extension_template_i.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PCLLibrary.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Type1.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Type1Type.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PresentationSDK\public_src\com_initializer.h">
+      <Filter>Source Files\PresentationSDK\public_src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\public_src\b_str.h">
+      <Filter>Source Files\PresentationSDK\public_src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\public_src\com_ptr.h">
+      <Filter>Source Files\PresentationSDK\public_src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PresentationSDK\public_src\string_utilities.h">
+      <Filter>Source Files\PresentationSDK\public_src</Filter>
+    </ClInclude>
+    <ClInclude Include="pcl_extension_interface_wrappers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Source Files\boilerplate</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files\boilerplate</Filter>
+    </ClInclude>
+    <ClInclude Include="dllmain.h">
+      <Filter>Source Files\boilerplate</Filter>
+    </ClInclude>
+    <ClInclude Include="tcp_client.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pcl_extension_template.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

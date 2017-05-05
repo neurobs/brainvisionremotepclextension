@@ -1,0 +1,8 @@
+
+LIBRARY      "pcl_extension_templatePS"
+
+EXPORTS
+	DllGetClassObject		PRIVATE
+	DllCanUnloadNow			PRIVATE
+	DllRegisterServer		PRIVATE
+	DllUnregisterServer		PRIVATE

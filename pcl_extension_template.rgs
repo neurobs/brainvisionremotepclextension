@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s 'pcl_extension_template'
+		'pcl_extension_template.DLL'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

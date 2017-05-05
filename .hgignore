@@ -1,0 +1,11 @@
+# use glob syntax
+syntax: glob
+.vs/*
+Debug/*
+Release/*
+ipch/*
+*.VC.db
+*.VC.VC.opendb
+pcl_extension_template_i.c
+pcl_extension_template_i.h
+*.user

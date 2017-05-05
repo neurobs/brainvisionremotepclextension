@@ -1,0 +1,43 @@
+// pcl_extension_template.idl : IDL source for pcl_extension_template
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (pcl_extension_template.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "PCLExtension.idl";
+
+[
+	uuid(785F4DF5-A70F-45C9-9DDE-339FBADACEC0),
+	version(1.0),
+	helpstring("pcl_extension_template 1.0 Type Library")
+]
+library pcl_extension_templateLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(AC90F539-CE07-4DA3-B89A-F5DDA45A38DC),
+		helpstring("PCLLibrary Class")
+	]
+	coclass PCLLibrary
+	{
+		[default] interface IPCLLibrary;
+	};
+	[
+		uuid(64A6AADF-564C-4412-B3BE-689BB3861D5A),
+		helpstring("Type1Type Class")
+	]
+	coclass Type1Type
+	{
+		[default] interface IPCLType;
+	};
+	[
+		uuid(6722922F-3BAA-4B03-864C-FD1D977364CB),
+		helpstring("Type1 Class")
+	]
+	coclass Type1
+	{
+		[default] interface IPCLObject;
+	};
+};

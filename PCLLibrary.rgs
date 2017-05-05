@@ -1,0 +1,26 @@
+HKCR
+{
+	pcl_extension_template.PCLLibrary.1 = s 'PCLLibrary Class'
+	{
+		CLSID = s '{AC90F539-CE07-4DA3-B89A-F5DDA45A38DC}'
+	}
+	pcl_extension_template.PCLLibrary = s 'PCLLibrary Class'
+	{
+		CLSID = s '{AC90F539-CE07-4DA3-B89A-F5DDA45A38DC}'
+		CurVer = s 'pcl_extension_template.PCLLibrary.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AC90F539-CE07-4DA3-B89A-F5DDA45A38DC} = s 'PCLLibrary Class'
+		{
+			ProgID = s 'pcl_extension_template.PCLLibrary.1'
+			VersionIndependentProgID = s 'pcl_extension_template.PCLLibrary'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{785F4DF5-A70F-45C9-9DDE-339FBADACEC0}'
+		}
+	}
+}

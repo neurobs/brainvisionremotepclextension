@@ -1,0 +1,26 @@
+HKCR
+{
+	pcl_extension_template.Type1.1 = s 'Type1 Class'
+	{
+		CLSID = s '{6722922F-3BAA-4B03-864C-FD1D977364CB}'
+	}
+	pcl_extension_template.Type1 = s 'Type1 Class'
+	{
+		CLSID = s '{6722922F-3BAA-4B03-864C-FD1D977364CB}'
+		CurVer = s 'pcl_extension_template.Type1.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6722922F-3BAA-4B03-864C-FD1D977364CB} = s 'Type1 Class'
+		{
+			ProgID = s 'pcl_extension_template.Type1.1'
+			VersionIndependentProgID = s 'pcl_extension_template.Type1'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{785F4DF5-A70F-45C9-9DDE-339FBADACEC0}'
+		}
+	}
+}
