@@ -49,7 +49,7 @@ STDMETHODIMP CPCLLibrary::getName(BSTR * name)
 
 	/// ------- Template TODO -------
 	/// Define your extension name here
-	*name = SysAllocString( L"Brain Products Remote Recorder PCL Extension Library" );
+	*name = SysAllocString( L"Brain Products Remote Client PCL Extension Library" );
 
 	COM_METHOD_END( L"CPCLLibrary::getName" ) 
 }
@@ -62,7 +62,7 @@ STDMETHODIMP CPCLLibrary::getAuthor(BSTR * author)
 
 	/// ------- Template TODO -------
 	/// Define your name here
-	*author = SysAllocString( L"Brain Products" );
+	*author = SysAllocString( L"Neurobehavioral Systems" );
 
 	COM_METHOD_END( L"CPCLLibrary::getAuthor" ) 
 }
@@ -75,7 +75,7 @@ STDMETHODIMP CPCLLibrary::getVersion(BSTR * ver)
 
 	/// ------- Template TODO -------
 	/// Put your version number here
-	*ver = SysAllocString( L"1" );
+	*ver = SysAllocString( L"2" );
 
 	COM_METHOD_END( L"CPCLLibrary::getVersion" ) 
 }

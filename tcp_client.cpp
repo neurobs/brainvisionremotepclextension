@@ -115,37 +115,38 @@ void TCP_client::connect(const std::string& host, const std::string& service,
 		ec ? ec : boost::asio::error::host_not_found);
 }
 
-//std::string TCP_client::read_line(boost::posix_time::time_duration timeout)
-//{
-//	// Set a deadline for the asynchronous operation. Since this function uses
-//	// a composed operation (async_read_until), the deadline applies to the
-//	// entire operation, rather than individual reads from the socket.
-//	deadline_.expires_from_now(timeout);
-//
-//	// Set up the variable that receives the result of the asynchronous
-//	// operation. The error code is set to would_block to signal that the
-//	// operation is incomplete. Asio guarantees that its asynchronous
-//	// operations will never fail with would_block, so any other value in
-//	// ec indicates completion.
-//	boost::system::error_code ec = boost::asio::error::would_block;
-//
-//	// Start the asynchronous operation itself. The boost::lambda function
-//	// object is used as a callback and will update the ec variable when the
-//	// operation completes. The blocking_udp_client.cpp example shows how you
-//	// can use boost::bind rather than boost::lambda.
-//	boost::asio::async_read_until(socket_, input_buffer_, '\n', var(ec) = _1);
-//
-//	// Block until the asynchronous operation has completed.
-//	do io_service_.run_one(); while (ec == boost::asio::error::would_block);
-//
+std::string TCP_client::read_line(boost::posix_time::time_duration timeout)
+{
+	// Set a deadline for the asynchronous operation. Since this function uses
+	// a composed operation (async_read_until), the deadline applies to the
+	// entire operation, rather than individual reads from the socket.
+	deadline_.expires_from_now(timeout);
+
+	// Set up the variable that receives the result of the asynchronous
+	// operation. The error code is set to would_block to signal that the
+	// operation is incomplete. Asio guarantees that its asynchronous
+	// operations will never fail with would_block, so any other value in
+	// ec indicates completion.
+	boost::system::error_code ec = boost::asio::error::would_block;
+
+	// Start the asynchronous operation itself. The boost::lambda function
+	// object is used as a callback and will update the ec variable when the
+	// operation completes. The blocking_udp_client.cpp example shows how you
+	// can use boost::bind rather than boost::lambda.
+	boost::asio::async_read_until(socket_, input_buffer_, '\r', var(ec) = _1);
+
+	// Block until the asynchronous operation has completed.
+	do io_service_.run_one(); while (ec == boost::asio::error::would_block);
+
+	//this error throws if nothing is received. Suppress and return empty line instead.
 //	if (ec)
 //		throw boost::system::system_error(ec);
-//
-//	std::string line;
-//	std::istream is(&input_buffer_);
-//	std::getline(is, line);
-//	return line;
-//}
+
+	std::string line;
+	std::istream is(&input_buffer_);
+	std::getline(is, line);
+	return line;
+}
 
 void TCP_client::write(const std::string& line,
 	boost::posix_time::time_duration timeout)

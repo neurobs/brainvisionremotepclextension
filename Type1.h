@@ -56,6 +56,11 @@ public:
 	public_nbs::COM_ptr<IPCLType> type_;
 
 private:
+	enum class application_state { CLOSED, OPENED, APPLICATION_ERROR = -1 };
+	enum class recorder_state { OFF, MONITORING, CALIBRATION, IMPEDANCE_CHECK, SAVING_RECORDING, SAVING_CALIBRATION, PAUSE_RECORDING, PAUSE_CALIBRATION, PAUSE_IMPEDANCE_CHECK }; //SAVING_CALIBRATION, PAUSE_CALIBRATION, PAUSE_IMPEDANCE_CHECK blocked by demo app. Blocked in this extension as well
+	enum class acquisition_state { STOPPED, RUNNING, WARNING, ACQUISITION_ERROR };
+
+
 	std::wstring last_error_;
 
 	typedef void (CType1::*Method_call)( public_nbs::pcl_extension::Arguments args );
@@ -72,7 +77,9 @@ private:
 	void close_recorder( public_nbs::pcl_extension::Arguments args );
 
 	void set_impedance_check_mode(public_nbs::pcl_extension::Arguments args);
-	void set_monitoring_mode(public_nbs::pcl_extension::Arguments args);
+	void set_view_test_mode(public_nbs::pcl_extension::Arguments args);
+	void start_viewing(public_nbs::pcl_extension::Arguments args);
+	void stop_viewing(public_nbs::pcl_extension::Arguments args);
 
 	void start_recording( public_nbs::pcl_extension::Arguments args );
 	void pause_recording( public_nbs::pcl_extension::Arguments args );
@@ -80,10 +87,19 @@ private:
 	void stop_recording( public_nbs::pcl_extension::Arguments args );
 	void dc_reset( public_nbs::pcl_extension::Arguments args );
 	void send_raw_message(public_nbs::pcl_extension::Arguments args);
+	void set_overwrite_protection(public_nbs::pcl_extension::Arguments args);
+
+	void check_response(std::vector<std::string> desired_responses, std::vector<std::string> ignored_responses);
+	application_state get_app_state();
+	recorder_state get_recorder_state();
+	acquisition_state get_acquisition_state();
+	void send_annotation(public_nbs::pcl_extension::Arguments args);
 	
-	/// ------- Template TODO -------
-	/// Add your object data here
 	TCP_client connection_;
+	int timeout_;
+
+
+
 
 	void send(const std::string& s);
 

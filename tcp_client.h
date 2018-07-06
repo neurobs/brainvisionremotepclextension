@@ -35,7 +35,7 @@ public:
 	void connect(const std::string& host, const std::string& service,
 		boost::posix_time::time_duration timeout);
 
-//	std::string read_line(boost::posix_time::time_duration timeout);
+	std::string read_line(boost::posix_time::time_duration timeout);
 
 	void write(const std::string& line,
 		boost::posix_time::time_duration timeout);

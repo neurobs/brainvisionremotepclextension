@@ -88,7 +88,10 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		m.add_argument( L"path_to_workspace", STRING_NAME, 0, false, L"Path to the workspace to load" );
 		m.add_argument(L"experiment_number", STRING_NAME, 0, false, L"Experiment name or number so that the saved .eeg file is named correctly according to conventions.");
 		m.add_argument(L"subject_id", STRING_NAME, 0, false, L"Unique test subject number so that the saved .eeg file is named correctly according to conventions");
-		m.add_argument(L"init_sequence_delay", INT_NAME, 0, false, L"Wait in milliseconds inserted between initialization steps to allow Recorder time to complete each action. Calls to this method will take at least 4 times this value.");
+		m.add_argument(L"timeout", INT_NAME, 0, false, L"Timeout in milliseconds per command expected to be received from the BrainVision device.");
+		
+		mlist.add_predefined_variable(L"int", L"OVERWRITE_PROTECTION_OFF", L"0");
+		mlist.add_predefined_variable(L"int", L"OVERWRITE_PROTECTION_ON", L"1");
 	}
 	{
 		CType1::methods_.push_back( &CType1::close_recorder);
@@ -103,10 +106,22 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		m.set_description(L"Switches the BrainVision Recorder to impedance check mode");
 	}
 	{
-		CType1::methods_.push_back(&CType1::set_monitoring_mode);
+		CType1::methods_.push_back(&CType1::set_view_test_mode);
 		Method m = mlist.add_method();
-		m.set_name(L"set_monitoring_mode");
-		m.set_description(L"Switches the BrainVision Recorder to monitoring mode");
+		m.set_name(L"set_view_test_mode");
+		m.set_description(L"Switches the BrainVision Recorder to view test signal mode");
+	}
+	{
+		CType1::methods_.push_back(&CType1::start_viewing);
+		Method m = mlist.add_method();
+		m.set_name(L"start_viewing");
+		m.set_description(L"Switches the BrainVision Recorder to viewing mode");
+	}
+	{
+		CType1::methods_.push_back(&CType1::stop_viewing);
+		Method m = mlist.add_method();
+		m.set_name(L"stop_viewing");
+		m.set_description(L"Stops the viewing or monitoring");
 	}
 	{
 		CType1::methods_.push_back(&CType1::start_recording);
@@ -142,8 +157,24 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		CType1::methods_.push_back(&CType1::send_raw_message);
 		Method m = mlist.add_method();
 		m.set_name(L"send_raw_message");
-		m.set_description(L"Sends a message you specify to the recording computer. It must be a supported message formatted correctly, or the recorder could be put in an unintended state. Only use this if the action you are performing is not already provided by another method.");
-		m.add_argument(L"message", STRING_NAME, 0, false, L"Text to be sent to the recording computer.");
+		m.set_description(L"Sends a message you specify to the BrainVision server. It must be a supported message formatted correctly, or the recorder could be put in an unintended state. Only use this if the action you are performing is not already provided by another method.");
+		m.add_argument(L"message", STRING_NAME, 0, false, L"Text to be sent to the BrainVision server.");
+	}
+	{
+		CType1::methods_.push_back(&CType1::set_overwrite_protection);
+		Method m = mlist.add_method();
+		m.set_name(L"set_overwrite_protection");
+		m.set_description(L"Sets overwrite protection");
+		m.add_argument(L"value", BOOL_NAME, 0, false, L"Overwrite protection value.");
+	}
+	{
+		CType1::methods_.push_back(&CType1::send_annotation);
+		Method m = mlist.add_method();
+		m.set_name(L"send_annotation");
+		m.set_description(L"Sends an annotation to BrainVision server (and recorder).");
+		m.add_argument(L"description", STRING_NAME, 0, false, L"Description to be sent to the BrainVision server.");
+		m.add_argument(L"type", STRING_NAME, 0, false, L"Type to be sent to the BrainVision server.");
+
 	}
 
 	COM_METHOD_END( L"CType1Type::getMethods" ) 
@@ -207,7 +238,7 @@ STDMETHODIMP CType1Type::getDescription(BSTR * desc)
 
 	/// ------- Template TODO -------
 	/// Define a description of your type here
-	*desc = SysAllocString( L"This type handles a remote connection to the recording computer"  );
+	*desc = SysAllocString( L"This type handles a connection to the Brain Vision Remote Contorl Server 2.0"  );
 
 	COM_METHOD_END( L"CType1Type::getDescription" ) 
 }
