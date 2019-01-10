@@ -40,10 +40,9 @@ using boost::lambda::_1;
 //              |         |
 //              +---------+
 //
-// If the actor determines that the deadline has expired, the socket is closed
-// and any outstanding operations are consequently cancelled. The socket
-// operations themselves use boost::lambda function objects as completion
-// handlers. For a given socket operation, the client object runs the
+// If the actor determines that the deadline has expired, the outstanding operations 
+// are cancelled. The socket operations themselves use boost::lambda function objects 
+// as completion handlers. For a given socket operation, the client object runs the
 // io_service to block thread execution until the actor completes.
 //
 TCP_client::TCP_client()
@@ -143,8 +142,11 @@ std::string TCP_client::read_line(boost::posix_time::time_duration timeout)
 //		throw boost::system::system_error(ec);
 
 	std::string line;
-	std::istream is(&input_buffer_);
-	std::getline(is, line);
+
+	if (!ec) {
+		std::istream is(&input_buffer_);
+		std::getline(is, line);
+	}
 	return line;
 }
 
@@ -190,10 +192,10 @@ void TCP_client::check_deadline()
 	// deadline before this actor had a chance to run.
 	if (deadline_.expires_at() <= deadline_timer::traits_type::now())
 	{
-		// The deadline has passed. The socket is closed so that any outstanding
-		// asynchronous operations are cancelled. This allows the blocked
-		// connect(), read_line() or write_line() functions to return.
-		socket_.close();
+		// The deadline has passed. Outstanding asynchronous operations are 
+		// cancelled. This allows the blocked connect(), read_line() or 
+		//write_line() functions to return.
+		socket_.cancel();
 
 		// There is no longer an active deadline. The expiry is set to positive
 		// infinity so that the actor takes no action until a new deadline is set.

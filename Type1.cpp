@@ -28,7 +28,6 @@ std::wstring utf8_to_utf16(const std::string& s)
 
 std::vector<CType1::Method_call> CType1::methods_;
 std::vector<CType1::Method_call> CType1::operators_new_;
-const char* const CType1::PORT = "6700";
 
 //---------------------------------------------------------------------------
 
@@ -100,33 +99,23 @@ void CType1::operator_new( public_nbs::pcl_extension::Arguments args )
 	check_arg_count( args.count(), 2, L"CType1::operator_new" );
 
 	auto ip = std::dynamic_pointer_cast<PCLString>( args.argument( 0 ) );
-	auto time_out_ms = std::dynamic_pointer_cast<PCLInt>( args.argument( 1 ) );
-	check_args( ip, time_out_ms, L"CType1::operator_new" );
+	auto port = std::dynamic_pointer_cast<PCLString>( args.argument( 1 ) );
+	check_args( ip, port, L"CType1::operator_new" );
+
 
 	try
 	{
-		connection_.connect(unicode_to_single_byte(ip->value()), PORT, boost::posix_time::milliseconds(time_out_ms->value()));
+		connection_.connect(unicode_to_single_byte(ip->value()), utf16_to_utf8(port->value()), boost::posix_time::milliseconds(10000));
 	}
 	catch (std::exception& e)
 	{
 		throw Exception(utf8_to_utf16(e.what()));
 	}
 
-//  Will hopefully work with version 2.1, etc.
-//	send("VS");
-//	try {
-//		check_response({"VS:2.0\r"}, {});
-//	}
-//	catch (...) {
-//		throw public_nbs::Exception(L"Presentation BrainVision extension only works with Version 2 of the remote control server.");
-//	}
+	timeout_ = 10000;
+	
 	send("VM");
-	try {
-		check_response({ "VM:2\r" }, {});
-	}
-	catch (...) {
-		throw public_nbs::Exception(L"Presentation BrainVision extension only works with Version 2 of the messaging protocol.");
-	}
+	check_response({ "VM:2\r" }, {});
 }
 
 void CType1::check_response(std::vector<std::string> desired_responses, std::vector<std::string> ignored_responses) {
@@ -209,7 +198,9 @@ void CType1::open_recorder( public_nbs::pcl_extension::Arguments args )
 	auto timeout_ms =   std::dynamic_pointer_cast<PCLInt>(   args.argument(3));
 	check_args( workspace, experiment, subject, timeout_ms, L"CType1::open_recorder" );
 	timeout_ = timeout_ms->value();
-	//Sleep(3000);
+
+	send("O");
+	check_response({ "O:OK\r", "AP:1\r", "RS:0\r" }, { "AQ:0\r" });
 
 	send("1:" + utf16_to_utf8(workspace->value()));
 	check_response({"1:" + utf16_to_utf8(workspace->value()) + ":OK\r"}, {});
@@ -217,8 +208,7 @@ void CType1::open_recorder( public_nbs::pcl_extension::Arguments args )
 	check_response({"2:" + utf16_to_utf8(experiment->value()) + ":OK\r"}, {});
 	send("3:" + utf16_to_utf8(subject->value()));
 	check_response({"3:" + utf16_to_utf8(subject->value()) + ":OK\r"}, {});
-	send("O");
-	check_response({ "O:OK\r", "AP:1\r", "RS:0\r"}, {"AQ:0\r"});
+
 }
 
 //---------------------------------------------------------------------------
@@ -247,7 +237,7 @@ void CType1::set_impedance_check_mode(public_nbs::pcl_extension::Arguments args)
 	} 
 	else {
 		send("I");
-		check_response({ "I:OK\r", "RS:3\r", "AQ:1\r" }, {"AQ:0\r"});
+		check_response({ "I:OK\r", "RS:3\r", "AQ:1\r" }, {"AQ:0\r", "RS:0\r"});
 	}
 }
 
@@ -266,10 +256,10 @@ void CType1::set_view_test_mode(public_nbs::pcl_extension::Arguments args)
 
 //---------------------------------------------------------------------------
 
-void CType1::start_viewing(public_nbs::pcl_extension::Arguments args)
+void CType1::set_monitoring_mode(public_nbs::pcl_extension::Arguments args)
 {
 	if (get_recorder_state() != recorder_state::MONITORING) {
-		check_arg_count(args.count(), 0, L"CType1::start_viewing");
+		check_arg_count(args.count(), 0, L"CType1::set_monitoring_mode");
 
 		send("M");
 		check_response({ "M:OK\r", "RS:1\r", "AQ:1\r" }, { "AQ:0\r" });
@@ -377,10 +367,26 @@ void CType1::dc_reset(public_nbs::pcl_extension::Arguments args)
 
 void CType1::send_raw_message(public_nbs::pcl_extension::Arguments args)
 {
-	check_arg_count(args.count(), 1, L"CType1::send_raw_message");
+	check_arg_count(args.count(), 3, L"CType1::send_raw_message");
 	auto message = std::dynamic_pointer_cast<PCLString>(args.argument(0));
-
+	auto max_responses = std::dynamic_pointer_cast<PCLInt>(args.argument(1));
+	auto responses = std::dynamic_pointer_cast<PCLStringArray>(args.argument(2));
+	
+	std::vector<std::string> responses_local;
+	std::string response = "";
 	send(utf16_to_utf8(message->value()));
+
+	for(int i=0; i<max_responses->value(); i++) {
+		response = connection_.read_line(boost::posix_time::millisec(timeout_));
+		if(response == "") break;
+		else responses_local.push_back(response);
+	}
+
+	responses->resize(responses_local.size());
+	for (unsigned int i = 0; i < responses_local.size(); i++) {
+		responses->set_value(i, utf8_to_utf16(responses_local[i]));
+	}
+
 }
 
 //---------------------------------------------------------------------------

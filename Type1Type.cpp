@@ -70,9 +70,9 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		CType1::operators_new_.push_back( &CType1::operator_new);
 		// tell Presentation about the method
 		Method m = mlist.add_new();
-		m.set_description( L"Creates object with initial int value" );
+		m.set_description( L"Creates a Brain Products Remote Control Client" );
 		m.add_argument( L"ip_address", STRING_NAME, 0, false, L"IP address of the recording computer" );
-		m.add_argument(L"time_out_ms", INT_NAME, 0, false, L"Time in milliseconds to wait for the connection to be made");
+		m.add_argument(L"port", STRING_NAME, 0, false, L"Port for the recording computer");
 	}
 	
 	CType1::methods_.clear();
@@ -112,10 +112,10 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		m.set_description(L"Switches the BrainVision Recorder to view test signal mode");
 	}
 	{
-		CType1::methods_.push_back(&CType1::start_viewing);
+		CType1::methods_.push_back(&CType1::set_monitoring_mode);
 		Method m = mlist.add_method();
-		m.set_name(L"start_viewing");
-		m.set_description(L"Switches the BrainVision Recorder to viewing mode");
+		m.set_name(L"set_monitoring_mode");
+		m.set_description(L"Switches the BrainVision Recorder to monitoring mode");
 	}
 	{
 		CType1::methods_.push_back(&CType1::stop_viewing);
@@ -159,6 +159,8 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		m.set_name(L"send_raw_message");
 		m.set_description(L"Sends a message you specify to the BrainVision server. It must be a supported message formatted correctly, or the recorder could be put in an unintended state. Only use this if the action you are performing is not already provided by another method.");
 		m.add_argument(L"message", STRING_NAME, 0, false, L"Text to be sent to the BrainVision server.");
+		m.add_argument(L"max responses", INT_NAME, 0, false, L"The maximum number of responses to listen for. If this is too high, the listener will timeout, causing a delay in the application (but no other harmful effects). If it is too low, leftover messages will confuse future commands.");
+		m.add_argument(L"responses", STRING_NAME, 1, false, L"The responses returned by the server. Check the size of the array to determene the number of detected responses.");
 	}
 	{
 		CType1::methods_.push_back(&CType1::set_overwrite_protection);

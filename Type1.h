@@ -78,7 +78,7 @@ private:
 
 	void set_impedance_check_mode(public_nbs::pcl_extension::Arguments args);
 	void set_view_test_mode(public_nbs::pcl_extension::Arguments args);
-	void start_viewing(public_nbs::pcl_extension::Arguments args);
+	void set_monitoring_mode(public_nbs::pcl_extension::Arguments args);
 	void stop_viewing(public_nbs::pcl_extension::Arguments args);
 
 	void start_recording( public_nbs::pcl_extension::Arguments args );
