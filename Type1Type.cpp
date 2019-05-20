@@ -100,6 +100,14 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		m.set_description( L"Closes the Recorder and deletes all the variables passed with initialization commands (e.g. for a new test subject when an experiment has been completed)." );
 	}
 	{
+		CType1::methods_.push_back(&CType1::select_amplifier);
+		Method m = mlist.add_method();
+		m.set_name(L"select_amplifier");
+		m.set_description(L"Specifies the BrainVision amplifier being used.");
+		m.add_argument(L"amplifier", STRING_NAME, 0, false, L"BrainVision amplifier being used.");
+	}
+
+	{
 		CType1::methods_.push_back(&CType1::set_impedance_check_mode);
 		Method m = mlist.add_method();
 		m.set_name(L"set_impedance_check_mode");
@@ -152,6 +160,13 @@ STDMETHODIMP CType1Type::getMethods(IPCLMethodList * list)
 		Method m = mlist.add_method();
 		m.set_name(L"dc_reset");
 		m.set_description(L"Performs a DC reset");
+	}
+	{
+		CType1::methods_.push_back(&CType1::set_serial_number);
+		Method m = mlist.add_method();
+		m.set_name(L"set_serial_number");
+		m.set_description(L"Specifies the serial number of the amplifier being used");
+		m.add_argument(L"serial number", STRING_NAME, 0, false, L"The serial number.");
 	}
 	{
 		CType1::methods_.push_back(&CType1::send_raw_message);

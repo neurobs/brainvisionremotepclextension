@@ -200,14 +200,14 @@ void CType1::open_recorder( public_nbs::pcl_extension::Arguments args )
 	timeout_ = timeout_ms->value();
 
 	send("O");
-	check_response({ "O:OK\r", "AP:1\r", "RS:0\r" }, { "AQ:0\r" });
+	check_response({ "O:OK\r" }, { });
 
 	send("1:" + utf16_to_utf8(workspace->value()));
 	check_response({"1:" + utf16_to_utf8(workspace->value()) + ":OK\r"}, {});
 	send("2:" + utf16_to_utf8(experiment->value()));
 	check_response({"2:" + utf16_to_utf8(experiment->value()) + ":OK\r"}, {});
 	send("3:" + utf16_to_utf8(subject->value()));
-	check_response({"3:" + utf16_to_utf8(subject->value()) + ":OK\r"}, {});
+	check_response({"3:" + utf16_to_utf8(subject->value()) + ":OK\r", "AP:1\r", "RS:0\r" }, {  "AQ:0\r" });
 
 }
 
@@ -219,6 +219,18 @@ void CType1::close_recorder( public_nbs::pcl_extension::Arguments args )
 
 	send("X");
 	check_response({ "X:OK\r", "AP:0\r" }, {"AQ:0\r", "RS:0\r"});
+
+}
+
+//---------------------------------------------------------------------------
+
+void CType1::select_amplifier(public_nbs::pcl_extension::Arguments args)
+{
+	check_arg_count(args.count(), 1, L"CType1::select_amplifier");
+	auto amplifier = std::dynamic_pointer_cast<PCLString>(args.argument(0));
+	check_args(amplifier, L"CType1::open_recorder");
+	send("SA:" + utf16_to_utf8(amplifier->value()));
+	check_response({ "SA:" + utf16_to_utf8(amplifier->value()) + ":OK\r" }, { "AQ:0\r", "AP:1\r", "RS:0\r" });
 
 }
 
@@ -361,6 +373,17 @@ void CType1::dc_reset(public_nbs::pcl_extension::Arguments args)
 
 	send("D");
 	check_response({ "D:OK\r"}, {});
+}
+
+//---------------------------------------------------------------------------
+
+void CType1::set_serial_number(public_nbs::pcl_extension::Arguments args)
+{
+	check_arg_count(args.count(), 1, L"CType1::serial_number");
+	auto serial = utf16_to_utf8(std::dynamic_pointer_cast<PCLString>(args.argument(0))->value());
+
+	send("SN:" + serial);
+	check_response({ "SN:" + serial + ":OK\r" }, {});
 }
 
 //---------------------------------------------------------------------------

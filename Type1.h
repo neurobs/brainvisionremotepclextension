@@ -76,6 +76,8 @@ private:
 	void open_recorder( public_nbs::pcl_extension::Arguments args );
 	void close_recorder( public_nbs::pcl_extension::Arguments args );
 
+	void select_amplifier(public_nbs::pcl_extension::Arguments args);
+
 	void set_impedance_check_mode(public_nbs::pcl_extension::Arguments args);
 	void set_view_test_mode(public_nbs::pcl_extension::Arguments args);
 	void set_monitoring_mode(public_nbs::pcl_extension::Arguments args);
@@ -86,6 +88,7 @@ private:
 	void resume_recording( public_nbs::pcl_extension::Arguments args );
 	void stop_recording( public_nbs::pcl_extension::Arguments args );
 	void dc_reset( public_nbs::pcl_extension::Arguments args );
+	void set_serial_number(public_nbs::pcl_extension::Arguments args);
 	void send_raw_message(public_nbs::pcl_extension::Arguments args);
 	void set_overwrite_protection(public_nbs::pcl_extension::Arguments args);
 

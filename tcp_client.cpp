@@ -145,9 +145,9 @@ std::string TCP_client::read_line(boost::posix_time::time_duration timeout)
 
 	if (!ec) {
 		std::istream is(&input_buffer_);
-		std::getline(is, line);
+		std::getline(is, line, '\r');
 	}
-	return line;
+	return line + '\r';
 }
 
 void TCP_client::write(const std::string& line,
