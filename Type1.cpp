@@ -124,7 +124,7 @@ void CType1::check_response(std::vector<std::string> desired_responses, std::vec
 		if (desired_responses.size() == 0) return;
 		
 		std::string received = connection_.read_line(boost::posix_time::millisec(timeout_));
-		if(received.size() == 0) continue;
+		if(received.size() <= 1) continue;
 
 		bool ignore = false;
 		for (auto &ignored_response : ignored_responses) {
@@ -200,14 +200,14 @@ void CType1::open_recorder( public_nbs::pcl_extension::Arguments args )
 	timeout_ = timeout_ms->value();
 
 	send("O");
-	check_response({ "O:OK\r" }, { });
+	check_response({ "O:OK\r", "AP:1\r", "RS:0\r"}, { "AQ:0\r" });
 
 	send("1:" + utf16_to_utf8(workspace->value()));
-	check_response({"1:" + utf16_to_utf8(workspace->value()) + ":OK\r"}, {});
+	check_response({"1:" + utf16_to_utf8(workspace->value()) + ":OK\r"}, { "AQ:0\r" });
 	send("2:" + utf16_to_utf8(experiment->value()));
-	check_response({"2:" + utf16_to_utf8(experiment->value()) + ":OK\r"}, {});
+	check_response({"2:" + utf16_to_utf8(experiment->value()) + ":OK\r"}, { "AQ:0\r" });
 	send("3:" + utf16_to_utf8(subject->value()));
-	check_response({"3:" + utf16_to_utf8(subject->value()) + ":OK\r", "AP:1\r", "RS:0\r" }, {  "AQ:0\r" });
+	check_response({"3:" + utf16_to_utf8(subject->value()) + ":OK\r"}, { "AQ:0\r" });
 
 }
 
