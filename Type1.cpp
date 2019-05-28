@@ -261,7 +261,7 @@ void CType1::set_view_test_mode(public_nbs::pcl_extension::Arguments args)
 		check_arg_count(args.count(), 0, L"CType1::set_view_test_mode");
 
 		send("T");
-		check_response({ "T:OK\r", "RS:2\r", "AQ:1\r" }, {"AQ:0\r"});
+		check_response({ "T:OK\r", "RS:2\r", "AQ:1\r" }, { "AQ:0\r", "RS:0\r" });
 	}
 
 }
@@ -274,7 +274,7 @@ void CType1::set_monitoring_mode(public_nbs::pcl_extension::Arguments args)
 		check_arg_count(args.count(), 0, L"CType1::set_monitoring_mode");
 
 		send("M");
-		check_response({ "M:OK\r", "RS:1\r", "AQ:1\r" }, { "AQ:0\r" });
+		check_response({ "M:OK\r", "RS:1\r", "AQ:1\r" }, { "AQ:0\r", "RS:0\r" });
 	}
 }
 
@@ -309,6 +309,9 @@ void CType1::start_recording(public_nbs::pcl_extension::Arguments args)
 	}
 	else if (state == recorder_state::CALIBRATION) {
 		check_response({ "S:OK\r", "RS:5\r" }, {});
+	} else{
+		throw public_nbs::Exception(L"Before starting recording, amplifier must be in monitoring or calibration mode");
+
 	}
 }
 
@@ -383,7 +386,7 @@ void CType1::set_serial_number(public_nbs::pcl_extension::Arguments args)
 	auto serial = utf16_to_utf8(std::dynamic_pointer_cast<PCLString>(args.argument(0))->value());
 
 	send("SN:" + serial);
-	check_response({ "SN:" + serial + ":OK\r" }, {});
+	check_response({ "SN:" + serial + ":OK\r" }, { "AQ:0\r", "RS:0\r" });
 }
 
 //---------------------------------------------------------------------------
@@ -422,7 +425,7 @@ void CType1::set_overwrite_protection(public_nbs::pcl_extension::Arguments args)
 
 	std::vector<std::string> ow1 = { "OW:1:OK\r" };
 	std::vector<std::string> ow0 = { "OW:0:OK\r" };
-	check_response(p->value() ? ow1 : ow0, {});
+	check_response(p->value() ? ow1 : ow0, { "AQ:0\r", "RS:0\r" });
 }
 
 //---------------------------------------------------------------------------
