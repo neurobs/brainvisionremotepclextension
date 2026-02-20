@@ -3,12 +3,12 @@ This project builds a PCL extension (plug-in) for the Presentation stimulus deli
 The project has the following dependencies:
 - Visual Studio 2015
 - Presentation SDK (available from www.neurobs.com)
-- Boost 1.64.0 C++ library
+- Boost 1.70.0 C++ library
 
 The project is expecting the following relative file locations:
 this_repository/*
 PresentationSDK/*
-boost/boost_1_64_0/*
+boost/boost_1_70_0/*
 
 See the Presentation documentation for usage details.
 
